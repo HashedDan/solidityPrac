@@ -9,6 +9,7 @@ contract Escrow {
 	// comment more and more
 	// test
 	// got it this time
+	// now
 	function Escrow(address _seller, address _arbiter) {
 
 	}
