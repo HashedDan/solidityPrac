@@ -7,6 +7,7 @@ contract Escrow {
 	address public arbiter;
 
 	// comment more and more
+	// test
 	function Escrow(address _seller, address _arbiter) {
 
 	}
