@@ -22,9 +22,9 @@ const input = fs.readFileSync(contractFile);
 const output = solc.compile(input.toString(), 1);
 const bytecode = output.contracts[contractName].bytecode;
 const abi = JSON.parse(output.contracts[contractName].interface);
-console.log("COPY ABI CODE BETWEEN DASHED LINE");
+console.log("COPY ABI CODE BETWEEN DASHED LINES");
 console.log("-----------");
-console.log(abi);
+console.log(JSON.stringify(abi));
 console.log("-----------");
 console.log("END ABI CODE");
 
@@ -49,5 +49,9 @@ const contractInstance = contract.new(
 	if (err) {
 		console.log(err);
 		return;
+	}
+	else {
+		// TODO: promise response to deployed
+        console.log('Contract Address: ' + res.address);
 	}
 });
