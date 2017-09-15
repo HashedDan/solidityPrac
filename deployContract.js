@@ -1,7 +1,7 @@
 /*
 * Use this script to deploy any contract to local testrpc
 *
-* Usage: node deployContact.js <Contract File Name>
+* Usage: node deployContract.js <Contract File Name> <Sender> [<Constructor Parameters...>]
 * 
 * 
 */
@@ -22,17 +22,27 @@ const input = fs.readFileSync(contractFile);
 const output = solc.compile(input.toString(), 1);
 const bytecode = output.contracts[contractName].bytecode;
 const abi = JSON.parse(output.contracts[contractName].interface);
-console.log("COPY ABI CODE BELOW");
+console.log("COPY ABI CODE BETWEEN DASHED LINE");
 console.log("-----------");
 console.log(abi);
+console.log("-----------");
+console.log("END ABI CODE");
 
 // Create contract object
 const contract = web3.eth.contract(abi);
 
+// Put all Constuctor Parameters into array
+var constructorParams = [];
+for (var i = 0; i < process.argv.length - 4; ++i) {
+	constructorParams[i] = process.argv[i+4];
+};
+
+
 // Deploy contract
-const contractInstance = contract.new({
+const contractInstance = contract.new(
+	constructorParams, {
 	data: bytecode,
-	from: web3.eth.accounts[0],
+	from: process.argv[3],
 	gas: 1000000,
 	gasPrice: 1
 }, (err, res) => {
