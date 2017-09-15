@@ -1,11 +1,11 @@
 pragma solidity ^0.4.11;
 
-contract helloWorld {
+contract helloworld {
 
 	// public means that "message" is accessible outside of helloWorld contract
 	string public message;
 
-	function helloWorld() {
+	function helloworld() {
 		message = "hello world!";
 	}
 

@@ -18,7 +18,7 @@
   "homepage": "https://github.com/HashedDan/solidityPrac#readme",
   "dependencies": {
     "fs": "0.0.1-security",
-    "solc": "^0.4.11",
+    "solc": "^0.4.16",
     "web3": "^0.19.0"
   }
 }
