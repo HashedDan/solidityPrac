@@ -1,6 +1,6 @@
 pragma solidity ^0.4.11;
 
-import "./Collective";
+import "./Collective.sol";
 
 contract  CollectiveFactory {
 
