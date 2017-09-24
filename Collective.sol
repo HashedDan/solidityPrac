@@ -95,8 +95,8 @@ contract Collective {
 
 contract  CollectiveFactory {
 
-	function createCollective() returns (Collective collectiveAddr) {
-		return new Collective();
+	function createCollective(bool _isSponsor, address[] _sponsors, address[] _individuals, bytes32[] _milestoneNames, uint[] _milestonePayoutDays, uint[] _milestonePayoutPercentages, uint[] _milestoneSteps) returns (Collective collectiveAddr) {
+		return new Collective(_isSponsor,_sponsors,_individuals,_milestoneNames,_milestonePayoutDays,_milestonePayoutPercentages,_milestoneSteps);
 	}
 
 }
