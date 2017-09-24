@@ -63,6 +63,10 @@ contract TheCollective {
 		return numDays;
 	}
 
+	function joinContract() {
+		sponsors.push(msg.sender);
+	}
+
 	function createMilestone(bytes32 _name, uint _daysToPayout, uint _payoutVal, uint _steps) {
 		milestones.push(Milestone(_name, startDate, _daysToPayout, _payoutVal, _steps, false));
 	}
