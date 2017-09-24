@@ -62,7 +62,7 @@ contract Collective {
 		uint numDays = daysSinceInception();
 		uint milestoneNum = getNextMilestoneNum();
 
-		if (_steps >= milestones[milestoneNum] && (milestones[milestoneNum].daysToPayout - numDays) > 0) {
+		if (_steps >= milestones[milestoneNum].steps && (milestones[milestoneNum].daysToPayout - numDays) > 0) {
 			// send money to individuals
 		}
 	}
@@ -75,58 +75,6 @@ contract Collective {
 		}
 
 		return _milestoneNames;
-	}
-
-	function getLastMilestone() constant returns (bytes32, uint, uint, bool) {
-		uint numDays = daysSinceInception();
-
-		for (uint i = 0; i < milestones.length; ++i) {
-			if (i == milestones.length - 1) {
-				return (milestones[i].name, (milestones[i].daysToPayout - numDays), milestones[i].steps, milestones[i].paidOut);
-			}
-			else if (milestones[i].daysToPayout < numDays && milestones[i+1].daysToPayout > numDays) {
-				return (milestones[i].name, (milestones[i].daysToPayout - numDays), milestones[i].steps, milestones[i].paidOut);
-			}
-		}
-	}
-
-	function getNextMilestone() constant returns (bytes32, uint, uint, bool) {
-		uint numDays = daysSinceInception();
-
-		for (uint i = 0; i < milestones.length; ++i) {
-			if (i == milestones.length - 1) {
-				return (milestones[i].name, (milestones[i].daysToPayout - numDays), milestones[i].steps, milestones[i].paidOut);
-			}
-			else if (milestones[i].daysToPayout < numDays && milestones[i+1].daysToPayout > numDays) {
-				return (milestones[i+1].name, (milestones[i+1].daysToPayout - numDays), milestones[i+1].steps, milestones[i+1].paidOut);
-			}
-		}		
-	}
-
-	function getNextMilestoneSteps() constant returns (uint) {
-		uint numDays = daysSinceInception();
-
-		for (uint i = 0; i < milestones.length; ++i) {
-			if (i == milestones.length - 1) {
-				return milestones[i].steps;
-			}
-			else if (milestones[i].daysToPayout < numDays && milestones[i+1].daysToPayout > numDays) {
-				return milestones[i+1].steps;
-			}
-		}
-	}
-
-	function getNextMilestoneDays() constant returns (uint) {
-		uint numDays = daysSinceInception();
-
-		for (uint i = 0; i < milestones.length; ++i) {
-			if (i == milestones.length - 1) {
-				return (milestones[i].daysToPayout - numDays);
-			}
-			else if (milestones[i].daysToPayout < numDays && milestones[i+1].daysToPayout > numDays) {
-				return (milestones[i+1].daysToPayout - numDays);
-			}
-		}
 	}
 
 	function getNextMilestoneNum() constant returns (uint) {
