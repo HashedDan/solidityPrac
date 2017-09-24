@@ -63,7 +63,9 @@ contract Collective {
 		uint milestoneNum = getNextMilestoneNum();
 
 		if (_steps >= milestones[milestoneNum].steps && (milestones[milestoneNum].daysToPayout - numDays) > 0) {
-			// send money to individuals
+			for (uint i = 0; i < individuals.length; ++i) {
+				individuals[i].transfer(((milestones[i].percentPayout / 100) * this.balance) / individuals.length);
+			}
 		}
 	}
 
@@ -88,6 +90,10 @@ contract Collective {
 				return i+1;
 			}
 		}
+	}
+
+	function fund() payable returns (bool) {
+		return true;
 	}
 
 }
