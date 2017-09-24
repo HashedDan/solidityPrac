@@ -19,9 +19,31 @@ contract TheCollective {
 	uint public startDate;
 	uint public endDate;
 
-	function TheCollective(bool _isSponsor, uint duration, address[] _sponsors, address[] _individuals) {
+	function TheCollective() {
 		
 		startDate = now;
+		// endDate = now + (duration * 1 days);
+
+		// if (_isSponsor) {
+		// 	sponsors.push(msg.sender);
+		// }
+		// else {
+		// 	individuals.push(msg.sender);
+		// }
+
+		// for (uint i = 0; i < _sponsors.length; ++i) {
+		// 	sponsors.push(_sponsors[i]);
+		// }
+
+		// for (uint j = 0; j < _individuals.length; ++j) {
+		// 	individuals.push(_individuals[j]);
+		// }
+
+		initializer = msg.sender;
+	}
+
+	function generate(bool _isSponsor, uint duration) {
+
 		endDate = now + (duration * 1 days);
 
 		if (_isSponsor) {
@@ -31,15 +53,13 @@ contract TheCollective {
 			individuals.push(msg.sender);
 		}
 
-		for (uint i = 0; i < _sponsors.length; ++i) {
-			sponsors.push(_sponsors[i]);
-		}
+		// for (uint i = 0; i < _sponsors.length; ++i) {
+		// 	sponsors.push(_sponsors[i]);
+		// }
 
-		for (uint j = 0; j < _individuals.length; ++j) {
-			individuals.push(_individuals[j]);
-		}
-
-		initializer = msg.sender;
+		// for (uint j = 0; j < _individuals.length; ++j) {
+		// 	individuals.push(_individuals[j]);
+		// }
 	}
 
 	function getInitializer() constant returns (address) {
