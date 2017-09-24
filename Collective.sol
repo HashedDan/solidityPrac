@@ -58,7 +58,7 @@ contract Collective {
 		milestones.push(Milestone(_name, startDate, _daysToPayout, _percentPayout, _steps, false));
 	}
 
-	function payoutMilestone() {
+	function payoutMilestone(uint _steps) {
 
 	}
 
@@ -72,30 +72,56 @@ contract Collective {
 		return _milestoneNames;
 	}
 
-	function getLastMilestone() constant returns (bytes32, uint, bool) {
+	function getLastMilestone() constant returns (bytes32, uint, uint, bool) {
 		uint numDays = daysSinceInception();
 
 		for (uint i = 0; i < milestones.length; ++i) {
 			if (i == milestones.length - 1) {
-				return (milestones[i].name, (milestones[i].daysToPayout - numDays), milestones[i].paidOut);
+				return (milestones[i].name, (milestones[i].daysToPayout - numDays), milestones[i].steps, milestones[i].paidOut);
 			}
 			else if (milestones[i].daysToPayout < numDays && milestones[i+1].daysToPayout > numDays) {
-				return (milestones[i].name, (milestones[i].daysToPayout - numDays), milestones[i].paidOut);
+				return (milestones[i].name, (milestones[i].daysToPayout - numDays), milestones[i].steps, milestones[i].paidOut);
 			}
 		}
 	}
 
-	function getNextMilestone() constant returns (bytes32, uint, bool) {
+	function getNextMilestone() constant returns (bytes32, uint, uint, bool) {
 		uint numDays = daysSinceInception();
 
 		for (uint i = 0; i < milestones.length; ++i) {
 			if (i == milestones.length - 1) {
-				return (milestones[i].name, (milestones[i].daysToPayout - numDays), milestones[i].paidOut);
+				return (milestones[i].name, (milestones[i].daysToPayout - numDays), milestones[i].steps, milestones[i].paidOut);
 			}
 			else if (milestones[i].daysToPayout < numDays && milestones[i+1].daysToPayout > numDays) {
-				return (milestones[i+1].name, (milestones[i+1].daysToPayout - numDays), milestones[i+1].paidOut);
+				return (milestones[i+1].name, (milestones[i+1].daysToPayout - numDays), milestones[i+1].steps, milestones[i+1].paidOut);
 			}
 		}		
+	}
+
+	function getNextMilestoneSteps constant returns (uint) {
+		uint numDays = daysSinceInception();
+
+		for (uint i = 0; i < milestones.length; ++i) {
+			if (i == milestones.length - 1) {
+				return milestones[i].steps;
+			}
+			else if (milestones[i].daysToPayout < numDays && milestones[i+1].daysToPayout > numDays) {
+				return milestones[i+1].steps;
+			}
+		}
+	}
+
+	function getNextMilestoneDays constant returns (uint) {
+		uint numDays = daysSinceInception();
+
+		for (uint i = 0; i < milestones.length; ++i) {
+			if (i == milestones.length - 1) {
+				return (milestones[i].daysToPayout - numDays);
+			}
+			else if (milestones[i].daysToPayout < numDays && milestones[i+1].daysToPayout > numDays) {
+				return (milestones[i+1].daysToPayout - numDays);
+			}
+		}
 	}
 
 }
