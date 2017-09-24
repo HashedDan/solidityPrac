@@ -59,7 +59,12 @@ contract Collective {
 	}
 
 	function payoutMilestone(uint _steps) {
+		uint numDays = daysSinceInception();
+		uint milestoneNum = getNextMilestoneNum();
 
+		if (_steps >= milestones[milestoneNum] && (milestones[milestoneNum].daysToPayout - numDays) > 0) {
+			// send money to individuals
+		}
 	}
 
 	function getMilestones() constant returns (bytes32[]) {
@@ -98,7 +103,7 @@ contract Collective {
 		}		
 	}
 
-	function getNextMilestoneSteps constant returns (uint) {
+	function getNextMilestoneSteps() constant returns (uint) {
 		uint numDays = daysSinceInception();
 
 		for (uint i = 0; i < milestones.length; ++i) {
@@ -111,7 +116,7 @@ contract Collective {
 		}
 	}
 
-	function getNextMilestoneDays constant returns (uint) {
+	function getNextMilestoneDays() constant returns (uint) {
 		uint numDays = daysSinceInception();
 
 		for (uint i = 0; i < milestones.length; ++i) {
@@ -120,6 +125,19 @@ contract Collective {
 			}
 			else if (milestones[i].daysToPayout < numDays && milestones[i+1].daysToPayout > numDays) {
 				return (milestones[i+1].daysToPayout - numDays);
+			}
+		}
+	}
+
+	function getNextMilestoneNum() constant returns (uint) {
+		uint numDays = daysSinceInception();
+
+		for (uint i = 0; i < milestones.length; ++i) {
+			if (i == milestones.length - 1) {
+				return i;
+			}
+			else if (milestones[i].daysToPayout < numDays && milestones[i+1].daysToPayout > numDays) {
+				return i+1;
 			}
 		}
 	}
