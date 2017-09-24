@@ -63,8 +63,24 @@ contract TheCollective {
 		return numDays;
 	}
 
-	function joinContract() {
-		sponsors.push(msg.sender);
+	function isComplete() constant returns (bool) {
+		uint numDays = daysSinceInception();
+
+		if (duration < numDays) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	function joinCollective(bool _isSponsor) {
+		if (_isSponsor) {
+			sponsors.push(msg.sender);
+		}
+		else {
+			individuals.push(msg.sender);
+		}
 	}
 
 	function createMilestone(bytes32 _name, uint _daysToPayout, uint _payoutVal, uint _steps) {
