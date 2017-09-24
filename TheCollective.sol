@@ -1,6 +1,6 @@
 pragma solidity ^0.4.11;
 
-contract Collective {
+contract TheCollective {
 
 	struct Milestone {
 		bytes32 name;
@@ -19,7 +19,7 @@ contract Collective {
 	uint public startDate;
 	uint public endDate;
 
-	function Collective(bool _isSponsor, address[] _sponsors, address[] _individuals) {
+	function TheCollective(bool _isSponsor, address[] _sponsors, address[] _individuals) {
 		
 		startDate = now;
 
@@ -38,11 +38,11 @@ contract Collective {
 			individuals.push(_individuals[j]);
 		}
 
-		for (uint k = 0; k < _milestoneNames.length; ++k) {
-			createMilestone(_milestoneNames[k], _milestonePayoutDays[k], _milestonePayoutPercentages[k], _milestoneSteps[k]);
-		}
-
 		initializer = msg.sender;
+	}
+
+	function getInitializer() constant returns (address) {
+		return initializer;
 	}
 
 	function daysSinceInception() constant returns (uint) {
