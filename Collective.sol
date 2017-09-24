@@ -65,25 +65,15 @@ contract Collective {
 		}
 	}
 
-	function getMilestones() constant returns (bytes32[]) {
-		bytes32[] memory _milestoneNames = new bytes32[](milestones.length);
-
-		for (uint i = 0; i < milestones.length; ++i) {
-			_milestoneNames[i] = milestones[i].name;
-		}
-
-		return _milestoneNames;
-	}
-
 	function getNextMilestoneNum() constant returns (uint) {
 		uint numDays = daysSinceInception();
 
 		for (uint i = 0; i < milestones.length; ++i) {
-			if (i == milestones.length - 1) {
+			if (milestones[i].daysToPayout < numDays && milestones[i].paidOut == false) {
 				return i;
 			}
-			else if (milestones[i].daysToPayout < numDays && milestones[i+1].daysToPayout > numDays) {
-				return i+1;
+			else if (i == milestones.length - 1) {
+				return i;
 			}
 		}
 	}
