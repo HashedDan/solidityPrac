@@ -45,6 +45,10 @@ contract TheCollective {
 		return initializer;
 	}
 
+	function getSponsors() constant returns (address[]) {
+		return sponsors;
+	}
+
 	function daysSinceInception() constant returns (uint) {
 		uint numDays = (now - startDate)/60/60/24;
 		return numDays;
