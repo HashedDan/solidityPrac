@@ -19,7 +19,7 @@ contract Collective {
 	uint public startDate;
 	uint public endDate;
 
-	function Collective(bool _isSponsor, address[] _sponsors, address[] _individuals, bytes32[] _milestoneNames, uint[] _milestonePayoutDays, uint[] _milestonePayoutPercentages, uint[] _milestoneSteps) {
+	function Collective(bool _isSponsor, address[] _sponsors, address[] _individuals) {
 		
 		startDate = now;
 

@@ -20,13 +20,14 @@ const contractName = ':' + contractFile.toString().slice(0,-4);
 // Compile the source code
 const input = fs.readFileSync(contractFile);
 const output = solc.compile(input.toString(), 1);
+console.log(output);
 const bytecode = output.contracts[contractName].bytecode;
 const abi = JSON.parse(output.contracts[contractName].interface);
-console.log("COPY ABI CODE BETWEEN DASHED LINES");
-console.log("-----------");
-console.log(JSON.stringify(abi));
-console.log("-----------");
-console.log("END ABI CODE");
+// console.log("COPY ABI CODE BETWEEN DASHED LINES");
+// console.log("-----------");
+// console.log(JSON.stringify(abi));
+// console.log("-----------");
+// console.log("END ABI CODE");
 
 // Create contract object
 const contract = web3.eth.contract(abi);
@@ -43,7 +44,7 @@ const contractInstance = contract.new(
 	constructorParams, {
 	data: bytecode,
 	from: process.argv[3],
-	gas: 1000000,
+	gas: 4400000,
 	gasPrice: 1
 }, (err, res) => {
 	if (err) {
@@ -52,6 +53,11 @@ const contractInstance = contract.new(
 	}
 	else {
 		// TODO: promise response to deployed
+		console.log("COPY ABI CODE BETWEEN DASHED LINES");
+		console.log("-----------");
+		console.log(JSON.stringify(abi));
+		console.log("-----------");
+		console.log("END ABI CODE");
         console.log('Contract Address: ' + res.address);
 	}
 });
