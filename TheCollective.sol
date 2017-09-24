@@ -84,9 +84,9 @@ contract TheCollective {
 	}
 
 	function isComplete() constant returns (bool) {
-		uint numDays = daysSinceInception();
+		uint curDate = (daysSinceInception() * 1 days) + now;
 
-		if (duration < numDays) {
+		if (endDate < curDate) {
 			return true;
 		}
 		else {
