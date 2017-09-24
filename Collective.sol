@@ -9,6 +9,7 @@ contract Collective {
 		uint daysToPayout;
 		uint percentPayout;
 		uint steps;
+		bool paidOut;
 	}
 
 	CollectiveFactory factory;
@@ -40,7 +41,7 @@ contract Collective {
 		}
 
 		for (uint k = 0; k < _milestoneNames.length; ++k) {
-			createMilestone(_milestoneNames[k], startDate, _milestonePayoutDays[k], _milestonePayoutPercentages[k], _milestoneSteps[k]);
+			createMilestone(_milestoneNames[k], _milestonePayoutDays[k], _milestonePayoutPercentages[k], _milestoneSteps[k]);
 		}
 
 		initializer = tx.origin;
@@ -48,8 +49,13 @@ contract Collective {
 		factory = CollectiveFactory(msg.sender);
 	}
 
+	function daysSinceInception() constant returns (uint) {
+		uint numDays = (now - startDate)/60/60/24;
+		return numDays;
+	}
+
 	function createMilestone(bytes32 _name, uint _daysToPayout, uint _percentPayout, uint _steps) {
-		milestones.push(Milestone(_name, startDate, _daysToPayout, _percentPayout, _steps));
+		milestones.push(Milestone(_name, startDate, _daysToPayout, _percentPayout, _steps, false));
 	}
 
 	function payoutMilestone() {
@@ -57,13 +63,39 @@ contract Collective {
 	}
 
 	function getMilestones() constant returns (bytes32[]) {
-		bytes32[] memory _milestoneNames = new bytes32(milestones.length);
+		bytes32[] memory _milestoneNames = new bytes32[](milestones.length);
 
 		for (uint i = 0; i < milestones.length; ++i) {
 			_milestoneNames[i] = milestones[i].name;
 		}
 
 		return _milestoneNames;
+	}
+
+	function getLastMilestone() constant returns (bytes32, uint, bool) {
+		uint numDays = daysSinceInception();
+
+		for (uint i = 0; i < milestones.length; ++i) {
+			if (i == milestones.length - 1) {
+				return (milestones[i].name, (milestones[i].daysToPayout - numDays), milestones[i].paidOut);
+			}
+			else if (milestones[i].daysToPayout < numDays && milestones[i+1].daysToPayout > numDays) {
+				return (milestones[i].name, (milestones[i].daysToPayout - numDays), milestones[i].paidOut);
+			}
+		}
+	}
+
+	function getNextMilestone() constant returns (bytes32, uint, bool) {
+		uint numDays = daysSinceInception();
+
+		for (uint i = 0; i < milestones.length; ++i) {
+			if (i == milestones.length - 1) {
+				return (milestones[i].name, (milestones[i].daysToPayout - numDays), milestones[i].paidOut);
+			}
+			else if (milestones[i].daysToPayout < numDays && milestones[i+1].daysToPayout > numDays) {
+				return (milestones[i+1].name, (milestones[i+1].daysToPayout - numDays), milestones[i+1].paidOut);
+			}
+		}		
 	}
 
 }
